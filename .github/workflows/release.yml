@@ -1,0 +1,121 @@
+name: Release mod
+run-name: >
+  push ${{github.repository}} #${{ github.run_number }}
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+  workflow_dispatch:
+  
+jobs:
+  determine-version:
+    runs-on: ubuntu-latest
+    outputs:
+      semVer: ${{ steps.gitversion.outputs.semVer }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0
+        with:
+          versionSpec: '5.x'
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0
+  build:
+    name: push ${{ needs.determine-version.outputs.semVer }}
+    runs-on: windows-latest
+    needs: determine-version
+    env:
+      SEMVER: ${{ needs.determine-version.outputs.semVer }}
+      ASSET_NAME: jcdcdev.Eco.Signs-${{ needs.determine-version.outputs.semVer }}
+      PROJECT_NAME: jcdcdev.Eco.Signs
+      PROJECT_PATH: ./src/jcdcdev.Eco.Signs.csproj
+      BUILD_OUTPUT: ./build-output
+      MOD_OUTPUT: ./build-assets/Mods/jcdcdev.Eco.Signs
+      ARTIFACT_OUTPUT: ./build-assets
+    outputs:
+      assetName: ${{ env.ASSET_NAME }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Download, Extract, and Copy DLLs
+        run: |
+          wget -O file.zip https://api.mod.io/v1/games/6/mods/2595901/files/3605377/download
+          unzip -d extracted_files file.zip
+          find extracted_files -name "*.dll" -exec cp {} ./src/lib/ \;
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 7.0.x
+      - name: Build project
+        run: dotnet build ${{ env.PROJECT_PATH }} -o ${{ env.BUILD_OUTPUT }} --configuration Release -p:Version=${{ env.SEMVER }}
+      - name: Copy Assets
+        run: |
+          mkdir "${{ env.MOD_OUTPUT }}"
+          cp "${{ env.BUILD_OUTPUT }}/${{ env.PROJECT_NAME }}.dll" "${{ env.MOD_OUTPUT }}"      
+      - uses: vimtor/action-zip@v1
+        with:
+          files: ${{ env.ARTIFACT_OUTPUT }}
+          dest: ${{ env.ASSET_NAME }}.zip
+      - name: Upload package
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.ASSET_NAME }}
+          path: ${{ env.ASSET_NAME }}.zip
+  deploy:
+    needs:
+      - determine-version
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      SEMVER: ${{ needs.determine-version.outputs.semVer }}
+      ASSET_NAME: ${{ needs.build.outputs.assetName }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Download package
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.ASSET_NAME }}
+      - run: echo "previous_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo '')" >> $GITHUB_ENV
+      - name: Generate changelog
+        id: changelog
+        uses: jaywcjlove/changelog-generator@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          filter-author: (jcdcdev|dependabot|renovate\\[bot\\]|dependabot\\[bot\\]|Renovate Bot)
+          filter: '(\+semver:\s?(breaking|major|feature|minor|fix|patch)|\+changelog-ignore:.*|Merge.*)'
+          custom-emoji: 'feature🌟'
+      - name: Get the changelog
+        run: echo "${{ steps.changelog.outputs.changelog }}"
+      - uses: nickelc/upload-to-modio@v2.1.0
+        with:
+          token: ${{ secrets.MODIO_TOKEN }}
+          game: ${{ secrets.MODIO_GAME }}
+          mod: ${{ secrets.MODIO_MOD }}
+          version: ${{ env.SEMVER }}
+          path: ${{ env.ASSET_NAME }}.zip
+          active: true
+          changelog: |
+            Version ${{ env.SEMVER }}
+
+            ${{ steps.changelog.outputs.changelog }}
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: ${{ env.ASSET_NAME }}.zip
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ env.SEMVER }}
+          tag: ${{ env.SEMVER }}
+          body: |
+            Compare https://github.com/${{ github.repository }}/compare/${{ env.previous_tag }}...${{env.SEMVER}}
+
+            ${{ steps.changelog.outputs.changelog }}
