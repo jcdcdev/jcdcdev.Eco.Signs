@@ -8,7 +8,7 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     env:
       PROJECT_NAME: jcdcdev.Eco.Signs
       PROJECT_PATH: ./src/jcdcdev.Eco.Signs.csproj

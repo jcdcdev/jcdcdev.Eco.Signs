@@ -26,7 +26,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0
   build:
     name: push ${{ needs.determine-version.outputs.semVer }}
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: determine-version
     env:
       SEMVER: ${{ needs.determine-version.outputs.semVer }}
