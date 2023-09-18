@@ -55,7 +55,7 @@ jobs:
         run: dotnet build ${{ env.PROJECT_PATH }} -o ${{ env.BUILD_OUTPUT }} --configuration Release -p:Version=${{ env.SEMVER }}
       - name: Copy Assets
         run: |
-          mkdir "${{ env.MOD_OUTPUT }}"
+          mkdir --parents "${{ env.MOD_OUTPUT }}"
           cp "${{ env.BUILD_OUTPUT }}/${{ env.PROJECT_NAME }}.dll" "${{ env.MOD_OUTPUT }}"      
       - uses: vimtor/action-zip@v1
         with:
