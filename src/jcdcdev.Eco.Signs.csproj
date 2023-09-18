@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="ElixrMods.Framework" Version="3.4.6"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Over9000SignPowerMod">
+        <HintPath>lib\Over9000SignPowerMod.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>
