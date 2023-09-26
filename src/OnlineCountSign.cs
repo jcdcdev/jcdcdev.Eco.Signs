@@ -2,7 +2,6 @@
 using Over9000SignPowerMod.Plugins.Interfaces;
 using Eco.Gameplay.Objects;
 using Eco.Gameplay.Players;
-using Eco.Gameplay.Utils;
 
 namespace jcdcdev.Eco.Signs;
 
