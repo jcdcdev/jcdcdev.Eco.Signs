@@ -24,14 +24,14 @@ public class StoreStockIcons : IOver9000SignPowerModPluginTag
         }
 
         var store = ServiceHolder<IWorldObjectManager>.Obj.GetFromID(guid);
-
         var comp = store.GetComponent<StoreComponent>();
+        var items = comp.AllOffers.Where(x=>!x.Buying).ToList();
         var sb = new StringBuilder("</mulIco \"");
-        sb.Append(string.Join(",", comp.AllOffers.Select(x => x.Stack.Item?.Name)));
+        sb.Append(string.Join(",", items.Select(x => x.Stack.Item?.Name)));
         sb.Append("\">");
         var ticks = MainController.SimulateTicks(sb.ToString());
 
-        if (_count > comp.AllOffers.Count())
+        if (_count > items.Count)
         {
             _count = 1;
         }
