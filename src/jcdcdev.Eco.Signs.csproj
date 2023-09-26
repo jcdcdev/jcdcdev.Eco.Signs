@@ -11,9 +11,19 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Over9000SignPowerMod">
-        <HintPath>lib\Over9000SignPowerMod.dll</HintPath>
-      </Reference>
+        <Reference Include="Over9000SignPowerMod">
+            <HintPath>lib\Over9000SignPowerMod.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
+    <Target Name="CopyDLLs" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+        <PropertyGroup>
+            <ServerPath>C:\Program Files (x86)\Steam\steamapps\common\Eco Server</ServerPath>
+            <ModsPath>$(ServerPath)\Mods\UserCode</ModsPath>
+            <ModOutputPath>$(ModsPath)\$(ProjectName)</ModOutputPath>
+        </PropertyGroup>
+        <Message Text="Copying $(ProjectName).dll to $(ModOutputPath)" Importance="Low"/>
+        <Copy SourceFiles="$(TargetDir)$(ProjectName).dll" DestinationFolder="$(ModOutputPath)"/>
+        <Message Text="Copied $(ProjectName).dll to $(ModOutputPath)" Importance="Low"/>
+    </Target>
 </Project>

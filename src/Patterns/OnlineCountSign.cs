@@ -1,16 +1,13 @@
 ﻿using System.Text.RegularExpressions;
-using Over9000SignPowerMod.Plugins.Interfaces;
 using Eco.Gameplay.Objects;
 using Eco.Gameplay.Players;
+using Over9000SignPowerMod.Plugins.Interfaces;
 
-namespace jcdcdev.Eco.Signs;
+namespace jcdcdev.Eco.Signs.Patterns;
 
 public class OnlineCountSign : IOver9000SignPowerModPluginTag
 {
-    public bool CanProcessed(WorldObject worldObject, User registrar)
-    {
-        return true;
-    }
+    public bool CanProcessed(WorldObject worldObject, User registrar) => true;
 
     public string ProcessTag(Match match, int tagNum, WorldObject worldObject, User registrar) =>
         UserManager.OnlineUsers.Count.ToString();
@@ -18,5 +15,5 @@ public class OnlineCountSign : IOver9000SignPowerModPluginTag
     public string TagName => "onlineCount";
     public bool Enabled => true;
 
-    public Regex TagRegex => new Regex("</onlineCount>", RegexOptions.Compiled);
+    public Regex TagRegex => new("</onlineCount>", RegexOptions.Compiled);
 }
