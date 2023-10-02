@@ -1,0 +1,15 @@
+<Project>
+    <Target Name="CopyDLLs" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+        <PropertyGroup>
+            <ServerPath>C:\Program Files (x86)\Steam\steamapps\common\Eco Server</ServerPath>
+            <ModsPath>$(ServerPath)\Mods\UserCode</ModsPath>
+            <ModOutputPath>$(ModsPath)\$(ProjectName)</ModOutputPath>
+        </PropertyGroup>
+        <ItemGroup>
+            <LibFiles Include="$(MSBuildProjectDirectory)\lib\*.dll" />
+        </ItemGroup>
+        
+        <Copy SourceFiles="$(TargetDir)$(ProjectName).dll" DestinationFolder="$(ModOutputPath)"/>
+        <Copy SourceFiles="@(LibFiles)" DestinationFolder="$(ModsPath)"/>
+    </Target>
+</Project>

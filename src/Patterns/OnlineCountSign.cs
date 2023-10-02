@@ -14,6 +14,5 @@ public class OnlineCountSign : IOver9000SignPowerModPluginTag
 
     public string TagName => "onlineCount";
     public bool Enabled => true;
-
     public Regex TagRegex => new("</onlineCount>", RegexOptions.Compiled);
 }

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Concurrent;
-using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Eco.Gameplay.Components;
 using Eco.Gameplay.Objects;
 using Eco.Gameplay.Players;
-using Microsoft.Extensions.Primitives;
+using jcdcdev.Eco.Core.Services;
 using Over9000SignPowerMod.Plugins.Interfaces;
 
 namespace jcdcdev.Eco.Signs.Patterns;
@@ -32,13 +31,13 @@ public class StoreIcons : IOver9000SignPowerModPluginTag
         var id = Constants.RegexPatterns.Guid.Match(match.Value);
         if (!Guid.TryParse(id.Value, out var guid))
         {
-            return "<color=red>Error</color><br>Failed to extract store id";
+            return Constants.Errors.StoreInvalid;
         }
 
-        var store = StoreController.Data.Get(guid);
+        var store = StoreService.Data.Get(guid);
         if (store == null)
         {
-            return $"<color=red>Error</color><br>Failed to find store with id {guid}";
+            return Constants.Errors.StoreNotFound;
         }
 
         var selling = match.Value.Contains("sell");
