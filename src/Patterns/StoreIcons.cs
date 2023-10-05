@@ -11,19 +11,9 @@ namespace jcdcdev.Eco.Signs.Patterns;
 
 public class StoreIcons : IOver9000SignPowerModPluginTag
 {
-    public bool CanProcessed(WorldObject worldObject, User registrar)
-    {
-        return true;
-    }
-
     private readonly ConcurrentDictionary<Guid, int> _count = new();
 
-    private int GetCurrentTick(Guid objectId) => _count.TryGetValue(objectId, out var value) ? value : 1;
-
-    private void SetNextTick(Guid objectId, int tick)
-    {
-        _count[objectId] = tick;
-    }
+    public bool CanProcessed(WorldObject worldObject, User registrar) => true;
 
     public string ProcessTag(Match match, int tagNum, WorldObject worldObject, User registrar)
     {
@@ -105,7 +95,7 @@ public class StoreIcons : IOver9000SignPowerModPluginTag
         {
             if (showStock)
             {
-                output.Append($"<br>");
+                output.Append("<br>");
             }
 
             output.Append(
@@ -120,4 +110,8 @@ public class StoreIcons : IOver9000SignPowerModPluginTag
     public string TagName => "store";
     public bool Enabled => true;
     public Regex TagRegex => new("</store (.*?)>", RegexOptions.Compiled);
+
+    private int GetCurrentTick(Guid objectId) => _count.TryGetValue(objectId, out var value) ? value : 1;
+
+    private void SetNextTick(Guid objectId, int tick) => _count[objectId] = tick;
 }

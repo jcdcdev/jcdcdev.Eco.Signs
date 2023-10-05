@@ -2,7 +2,4 @@
 
 namespace jcdcdev.Eco.Signs;
 
-public class SignsPlugin : PluginBase
-{
-    
-}
+public class SignsPlugin : PluginBase { }

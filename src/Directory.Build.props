@@ -6,9 +6,9 @@
             <ModOutputPath>$(ModsPath)\$(ProjectName)</ModOutputPath>
         </PropertyGroup>
         <ItemGroup>
-            <LibFiles Include="$(MSBuildProjectDirectory)\lib\*.dll" />
+            <LibFiles Include="$(MSBuildProjectDirectory)\lib\*.dll"/>
         </ItemGroup>
-        
+
         <Copy SourceFiles="$(TargetDir)$(ProjectName).dll" DestinationFolder="$(ModOutputPath)"/>
         <Copy SourceFiles="@(LibFiles)" DestinationFolder="$(ModsPath)"/>
     </Target>
