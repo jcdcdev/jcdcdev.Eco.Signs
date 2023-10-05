@@ -1,0 +1,16 @@
+[*]
+max_line_length = 160
+
+# ReSharper properties
+resharper_braces_for_ifelse = required
+resharper_csharp_empty_block_style = together_same_line
+resharper_method_or_operator_body = expression_body
+resharper_parentheses_redundancy_style = remove
+resharper_place_simple_embedded_statement_on_same_line = false
+resharper_place_simple_method_on_single_line = true
+
+# Microsoft .NET properties
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_expression_bodied_constructors = false:none
+csharp_style_expression_bodied_methods = true:none
+csharp_style_expression_bodied_properties = true:suggestion
