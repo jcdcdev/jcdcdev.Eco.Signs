@@ -8,7 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="ElixrMods.Framework" Version="3.4.6"/>
-        <PackageReference Include="jcdcdev.Eco.Core" Version="0.1.4"/>
+        <PackageReference Include="jcdcdev.Eco.Core" Version="0.1.5"/>
     </ItemGroup>
 
     <ItemGroup>
