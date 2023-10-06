@@ -8,9 +8,13 @@
 
     <ItemGroup>
         <PackageReference Include="ElixrMods.Framework" Version="3.4.6"/>
-        <PackageReference Include="jcdcdev.Eco.Core" Version="0.1.5"/>
+        <PackageReference Include="jcdcdev.Eco.Core" Version="0.2.0"/>
     </ItemGroup>
-
+    
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <Version>$([System.DateTime]::UtcNow.ToString(`yyyy.MMdd.HHmm`))</Version>
+    </PropertyGroup>
+    
     <ItemGroup>
         <Reference Include="Over9000SignPowerMod">
             <HintPath>lib\Over9000SignPowerMod.dll</HintPath>
