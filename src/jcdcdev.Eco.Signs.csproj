@@ -21,6 +21,7 @@
     <ItemGroup>
         <Reference Include="Over9000SignPowerMod">
             <HintPath>lib\Over9000SignPowerMod.dll</HintPath>
+            <Private>False</Private>
         </Reference>
     </ItemGroup>
 
