@@ -1,0 +1,50 @@
+name: Update modio mod description
+on:
+    workflow_dispatch:
+
+jobs:
+    update_mod_description:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Install tools
+              run: |
+                sudo apt-get install pandoc
+                sudo apt-get install jq
+                sudo apt-get install zip
+            - name: Convert README to HTML
+              id: convert
+              run: | 
+                pandoc .github/README.md -o README.html
+                README_HTML_SINGLE_LINE=$(cat README.html | tr '\n' ' ')
+                README_ENCODED=$(echo -n "$README_HTML_SINGLE_LINE" | jq -s -R -r @uri)
+                echo "README_HTML=$(printf '%q' "$README_ENCODED")" >> $GITHUB_ENV
+            - name: Update modio mod description
+              run: |
+                curl -X PUT 'https://api.mod.io/v1/games/${{ secrets.MODIO_GAME }}/mods/${{ secrets.MODIO_MOD }}' \
+                -H 'Authorization: Bearer ${{ secrets.MODIO_TOKEN }}' \
+                -d "description=${{ env.README_HTML }}" \
+                -d "homepage_url=${{ github.server_url }}/${{ github.repository }}"            
+            - name: Remove images from mod.io
+              run: |
+                  RESPONSE=$(curl -s -H "Authorization: Bearer ${{secrets.MODIO_TOKEN}}" https://api.mod.io/v1/games/${{ secrets.MODIO_GAME }}/mods/${{ secrets.MODIO_MOD }})
+                  IMAGES_JSON=$(echo "$RESPONSE" | jq -r '.media.images[] | @base64')
+                  for image in $IMAGES_JSON; do
+                    filename=$(echo "$image" | base64 --decode | jq -r '.filename')
+                    curl -X DELETE "https://api.mod.io/v1/games/${{ secrets.MODIO_GAME }}/mods/${{ secrets.MODIO_MOD }}/media" \
+                    -H 'Authorization: Bearer ${{ secrets.MODIO_TOKEN }}' \
+                    -d "images[]=$filename"
+                  done
+            - name: Upload images to mod.io
+              run: |
+                if [ ! -f "docs/logo.png" ]; then
+                    echo "docs/logo.png does not exist"
+                    text="${{ github.repository }}#${{ github.repository_owner }}/}"
+                    wget -O docs/logo.png "https://dummyimage.com/1280x720/000000/ffffff&text=${text}"
+                fi
+                zip -r -j images.zip docs/screenshots
+                curl "https://api.mod.io/v1/games/${{ secrets.MODIO_GAME }}/mods/${{ secrets.MODIO_MOD }}/media" \
+                -H 'Authorization: Bearer ${{ secrets.MODIO_TOKEN }}' \
+                -F logo=@docs/logo.png \
+                -F images=@images.zip
