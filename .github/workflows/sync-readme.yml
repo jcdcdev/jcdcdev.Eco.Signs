@@ -99,7 +99,7 @@ jobs:
                 filename=$(basename -- "$file")
                 if file --mime-type "$file" | grep -qE 'image/(jpeg|png|gif|tiff|bmp)'; then
                   if [[ $file == *.gif ]]; then
-                    convert "$file" -coalesce -layers optimize -resize $IMAGE_SIZE -background "#$BACKGROUND_COLOR" -gravity center -extent $IMAGE_SIZE "${IMAGES_UPLOAD_PATH}/${filename}.png"
+                    convert "${file}[0]" -resize $IMAGE_SIZE -background "#$BACKGROUND_COLOR" -gravity center -extent $IMAGE_SIZE "${IMAGES_UPLOAD_PATH}/${filename}.png"
                   else
                     convert "$file" -resize $IMAGE_SIZE -background "#$BACKGROUND_COLOR" -gravity center -extent $IMAGE_SIZE "$IMAGES_UPLOAD_PATH/$filename"
                   fi
