@@ -91,7 +91,7 @@ jobs:
             mkdir -p "$IMAGES_UPLOAD_PATH"
             rm -rf "$IMAGES_UPLOAD_PATH"/*
 
-            convert "$LOGO_PATH" -resize "$IMAGE_SIZE" -background "#$BACKGROUND_COLOR" -gravity center -extent "$IMAGE_SIZE" "$LOGO_UPLOAD_PATH"
+            convert "$LOGO_PATH" -resize $IMAGE_SIZE -background "#$BACKGROUND_COLOR" -gravity center -extent $IMAGE_SIZE "$LOGO_UPLOAD_PATH"
           
             for file in $IMAGES_PATH/*; do
               if [[ -f $file ]]; then
