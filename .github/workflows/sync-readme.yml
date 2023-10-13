@@ -32,7 +32,7 @@ jobs:
             sudo apt-get install imagemagick
         - name: Configure ImageMagick
           run: |
-            sudo sed -i '/disable ghostscript format types/,+6d' /etc/ImageMagick-6/policy.xml //this one is just to solve convertion from .tiff to pdf, you may need it some day
+            sudo sed -i '/disable ghostscript format types/,+6d' /etc/ImageMagick-6/policy.xml
             sudo sed -i -E 's/name="memory" value=".+"/name="memory" value="8GiB"/g' /etc/ImageMagick-6/policy.xml
             sudo sed -i -E 's/name="map" value=".+"/name="map" value="8GiB"/g' /etc/ImageMagick-6/policy.xml
             sudo sed -i -E 's/name="area" value=".+"/name="area" value="8GiB"/g' /etc/ImageMagick-6/policy.xml
