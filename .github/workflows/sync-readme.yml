@@ -52,19 +52,19 @@ jobs:
             echo "README_HTML=$(printf '%q' "$README_ENCODED")" >> $GITHUB_ENV
         - name: Update modio mod description
           run: |
-            curl -X PUT 'https://api.mod.io/v1/games/$MODIO_GAME/mods/$MODIO_MOD' \
-            -H 'Authorization: Bearer $MODIO_TOKEN' \
+            curl -X PUT "https://api.mod.io/v1/games/$MODIO_GAME/mods/$MODIO_MOD" \
+            -H "Authorization: Bearer $MODIO_TOKEN" \
             -d "description=$README_HTML" \
             -d "homepage_url=$HOME_URL"            
         - name: Remove images from mod.io
           run: |
-              RESPONSE=$(curl -s -H "Authorization: Bearer MODIO_TOKEN https://api.mod.io/v1/games/$MODIO_GAME/mods/$MODIO_MOD)
+              RESPONSE=$(curl -s -H "Authorization: Bearer $MODIO_TOKEN" "https://api.mod.io/v1/games/$MODIO_GAME/mods/$MODIO_MOD")
               IMAGES_JSON=$(echo "$RESPONSE" | jq -r '.media.images[] | @base64')
               
               for image in $IMAGES_JSON; do
                 filename=$(echo "$image" | base64 --decode | jq -r '.filename')
                 curl -X DELETE "https://api.mod.io/v1/games/$MODIO_GAME/mods/$MODIO_MOD/media" \
-                -H 'Authorization: Bearer $MODIO_TOKEN' \
+                -H "Authorization: Bearer $MODIO_TOKEN" \
                 -d "images[]=$filename"
               done
         - name: Generate Logo
@@ -83,7 +83,7 @@ jobs:
                   --header "dma-api-key: $IMEJIS_KEY" \
                   --header 'Content-Type: application/json' \
                   --data "$JSON_DATA" \
-                  --output $LOGO_PATH
+                  --output "$LOGO_PATH"
             fi
         - name: Resize images for mod.io
           run: |
@@ -103,11 +103,11 @@ jobs:
             done
         - name: Zip images
           run: |
-            zip -r -j images.zip $RESIZED_LOGO_PATH
-            zip -r -j images.zip $IMAGES_UPLOAD_PATH
+            IMAGE_ZIP="images.zip"
+            zip -r -j "$IMAGE_ZIP" "$IMAGES_UPLOAD_PATH" "$RESIZED_LOGO_PATH"
         - name: Upload images to mod.io
           run: |
             curl "https://api.mod.io/v1/games/$MODIO_GAME/mods/$MODIO_MOD/media" \
-            -H 'Authorization: Bearer $MODIO_TOKEN' \
-            -F logo=@$RESIZED_LOGO_PATH \
-            -F images=@images.zip
+            -H "Authorization: Bearer $MODIO_TOKEN" \
+            -F "logo=@$RESIZED_LOGO_PATH" \
+            -F images=@$IMAGE_ZIP
