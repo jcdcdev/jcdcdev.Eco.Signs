@@ -25,6 +25,7 @@ jobs:
         IMAGE_SIZE: "1920x1080"
         LOGO_UPLOAD_PATH: "temp_upload/0000_logo.png"
         IMAGES_UPLOAD_PATH: "temp_upload"
+        IMAGE_ZIP: "temp_upload/images.zip"
     name: "Update modio mod assets"
     steps:
         - name: Checkout code
@@ -107,7 +108,6 @@ jobs:
             done
         - name: Zip images
           run: |
-            IMAGE_ZIP="images.zip"
             zip -r -j "$IMAGE_ZIP" "$IMAGES_UPLOAD_PATH" "$LOGO_UPLOAD_PATH"
         - name: Upload images to mod.io
           run: |
