@@ -113,5 +113,5 @@ jobs:
           run: |
             curl "https://api.mod.io/v1/games/$MODIO_GAME/mods/$MODIO_MOD/media" \
             -H "Authorization: Bearer $MODIO_TOKEN" \
-            -F logo=@$LOGO_UPLOAD_PATH \
-            -F images=@$IMAGE_ZIP
+            -F "logo=@$LOGO_UPLOAD_PATH" \
+            -F "images=@$IMAGE_ZIP"
