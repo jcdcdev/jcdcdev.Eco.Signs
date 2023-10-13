@@ -70,20 +70,19 @@ jobs:
         - name: Generate Logo
           run: |      
             if [ ! -f "$LOGO_PATH" ]; then
-              JSON_DATA=$(cat <<EOF
+              printf -v JSON_DATA '
               {
-                "project": "$PROJECT",
-                "author": "$AUTHOR",
-                "version": "$VERSION"
-              }
-              EOF
-              )
-                echo "Downloading logo from imejis.io"
-                curl "https://api.imejis.io/api/designs/$IMEJIS_DESIGN_ID" \
-                  --header "dma-api-key: $IMEJIS_KEY" \
-                  --header 'Content-Type: application/json' \
-                  --data "$JSON_DATA" \
-                  --output "$LOGO_PATH"
+                "project": "%s",
+                "author": "%s",
+                "version": "%s"
+              }' "$PROJECT" "$AUTHOR" "$VERSION"
+
+              echo "Downloading logo from imejis.io"
+              curl "https://api.imejis.io/api/designs/$IMEJIS_DESIGN_ID" \
+                --header "dma-api-key: $IMEJIS_KEY" \
+                --header 'Content-Type: application/json' \
+                --data "$JSON_DATA" \
+                --output "$LOGO_PATH"
             fi
         - name: Resize images for mod.io
           run: |
