@@ -22,7 +22,7 @@ jobs:
         MODIO_TOKEN: "${{ secrets.MODIO_TOKEN }}"      
         # Internal variables
         BACKGROUND_COLOR: "0a1206"
-        IMAGE_SIZE: "1920x1080"
+        IMAGE_SIZE: 1920x1080
         LOGO_UPLOAD_PATH: "temp_upload/0000_logo.png"
         IMAGES_UPLOAD_PATH: "temp_upload"
     name: "Update modio mod assets"
