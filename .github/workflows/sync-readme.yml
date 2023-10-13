@@ -12,18 +12,17 @@ jobs:
         - name: Sync modio mod assets
           uses: jcdcdev/jcdcdev.Modio.SyncDocs@main
           with:
-            LOGO_PATH: "docs/logo.png"
-            IMAGES_PATH: "docs/screenshots"
-            README_PATH: ".github/README.md"
-            PROJECT_AUTHOR: "JCDC DEV"
-            PROJECT_NAME: "SIGNS"
-            PROJECT_URL: "${{ github.server_url }}/${{ github.repository }}"
+            logoPath: "docs/logo.png"
+            imagesPath: "docs/screenshots"
+            readmePath: ".github/README.md"
+            projectAuthor: "JCDC DEV"
+            projectName: "SIGNS"
             # Imejis variables
-            IMEJIS_DESIGN_ID: "${{ secrets.DESIGN_ID }}"
-            IMEJIS_KEY: "${{ secrets.IMEJIS_KEY }}"
+            imejisDesignId: "${{ secrets.DESIGN_ID }}"
+            imejisKey: "${{ secrets.IMEJIS_KEY }}"
             # Mod.io variables
-            MODIO_GAME: "${{ secrets.MODIO_GAME }}"
-            MODIO_MOD: "${{ secrets.MODIO_MOD }}"
-            MODIO_TOKEN: "${{ secrets.MODIO_TOKEN }}"     
+            modioGame: "${{ secrets.MODIO_GAME }}"
+            modioMod: "${{ secrets.MODIO_MOD }}"
+            modioToken: "${{ secrets.MODIO_TOKEN }}"     
             
       
