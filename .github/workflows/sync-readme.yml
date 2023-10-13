@@ -1,117 +1,29 @@
 name: Sync modio mod assets
-
 on:
   workflow_dispatch:
   workflow_call:
 jobs:
   update_mod_description:
     runs-on: ubuntu-latest
-    env:
-        LOGO_PATH: "docs/logo.png"
-        IMAGES_PATH: "docs/screenshots"
-        README_PATH: ".github/README.md"
-        PROJECT_AUTHOR: "JCDC DEV"
-        PROJECT_NAME: "SIGNS"
-        PROJECT_URL: "${{ github.server_url }}/${{ github.repository }}"
-        # Imejis variables
-        IMEJIS_DESIGN_ID: "${{ secrets.DESIGN_ID }}"
-        IMEJIS_KEY: "${{ secrets.IMEJIS_KEY }}"
-        # Mod.io variables
-        MODIO_GAME: "${{ secrets.MODIO_GAME }}"
-        MODIO_MOD: "${{ secrets.MODIO_MOD }}"
-        MODIO_TOKEN: "${{ secrets.MODIO_TOKEN }}"      
-        # Internal variables
-        BACKGROUND_COLOR: "0a1206"
-        IMAGE_SIZE: "1920x1080"
-        LOGO_UPLOAD_PATH: "temp_upload/0000_logo.png"
-        IMAGES_UPLOAD_PATH: "temp_upload"
-        IMAGE_ZIP: "temp_upload/images.zip"
     name: "Update modio mod assets"
     steps:
         - name: Checkout code
           uses: actions/checkout@v2
-        - name: Determine Version
-          run: |
-            VERSION=$(curl --silent "https://api.github.com/repos/${{ github.repository }}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-            echo "VERSION=$VERSION" >> $GITHUB_ENV
-        - name: Install tools
-          run: |
-            sudo apt-get install pandoc
-            sudo apt-get install jq
-            sudo apt-get install zip
-            sudo apt-get install imagemagick
-        - name: Configure ImageMagick
-          run: |
-            sudo sed -i '/disable ghostscript format types/,+6d' /etc/ImageMagick-6/policy.xml
-            sudo sed -i -E 's/name="memory" value=".+"/name="memory" value="8GiB"/g' /etc/ImageMagick-6/policy.xml
-            sudo sed -i -E 's/name="map" value=".+"/name="map" value="8GiB"/g' /etc/ImageMagick-6/policy.xml
-            sudo sed -i -E 's/name="area" value=".+"/name="area" value="8GiB"/g' /etc/ImageMagick-6/policy.xml
-            sudo sed -i -E 's/name="disk" value=".+"/name="disk" value="8GiB"/g' /etc/ImageMagick-6/policy.xml
-        - name: Convert README to HTML
-          run: | 
-            pandoc $README_PATH -o README.html
-            README_HTML_SINGLE_LINE=$(cat README.html | tr '\n' ' ')
-            README_ENCODED=$(echo -n "$README_HTML_SINGLE_LINE" | jq -s -R -r @uri)
-            echo "README_HTML=$(printf '%q' "$README_ENCODED")" >> $GITHUB_ENV
-        - name: Update modio mod description
-          run: |
-            curl -X PUT "https://api.mod.io/v1/games/$MODIO_GAME/mods/$MODIO_MOD" \
-            -H "Authorization: Bearer $MODIO_TOKEN" \
-            -d "description=$README_HTML" \
-            -d "homepage_url=$PROJECT_URL"            
-        - name: Remove images from mod.io
-          run: |
-            RESPONSE=$(curl -s -H "Authorization: Bearer $MODIO_TOKEN" "https://api.mod.io/v1/games/$MODIO_GAME/mods/$MODIO_MOD")
-            IMAGES_JSON=$(echo "$RESPONSE" | jq -r '.media.images[] | @base64')
+        - name: Sync modio mod assets
+          uses: jcdcdev/jcdcdev.Modio.SyncDocs@0.0.1-alpha.001
+          with:
+            LOGO_PATH: "docs/logo.png"
+            IMAGES_PATH: "docs/screenshots"
+            README_PATH: ".github/README.md"
+            PROJECT_AUTHOR: "JCDC DEV"
+            PROJECT_NAME: "SIGNS"
+            PROJECT_URL: "${{ github.server_url }}/${{ github.repository }}"
+            # Imejis variables
+            IMEJIS_DESIGN_ID: "${{ secrets.DESIGN_ID }}"
+            IMEJIS_KEY: "${{ secrets.IMEJIS_KEY }}"
+            # Mod.io variables
+            MODIO_GAME: "${{ secrets.MODIO_GAME }}"
+            MODIO_MOD: "${{ secrets.MODIO_MOD }}"
+            MODIO_TOKEN: "${{ secrets.MODIO_TOKEN }}"     
             
-            for image in $IMAGES_JSON; do
-              filename=$(echo "$image" | base64 --decode | jq -r '.filename')
-              curl -X DELETE "https://api.mod.io/v1/games/$MODIO_GAME/mods/$MODIO_MOD/media" \
-              -H "Authorization: Bearer $MODIO_TOKEN" \
-              -d "images[]=$filename"
-            done
-        - name: Generate Logo
-          run: |      
-            if [ ! -f "$LOGO_PATH" ]; then
-              printf -v JSON_DATA '
-              {
-                "project": "%s",
-                "author": "%s",
-                "version": "%s"
-              }' "$PROJECT_NAME" "$PROJECT_AUTHOR" "$VERSION"
-
-              echo "Downloading logo from imejis.io"
-              curl "https://api.imejis.io/api/designs/$IMEJIS_DESIGN_ID" \
-                --header "dma-api-key: $IMEJIS_KEY" \
-                --header 'Content-Type: application/json' \
-                --data "$JSON_DATA" \
-                --output "$LOGO_PATH"
-            fi
-        - name: Resize images for mod.io
-          run: |
-            mkdir -p "$IMAGES_UPLOAD_PATH"
-            rm -rf "$IMAGES_UPLOAD_PATH"/*
-
-            convert "$LOGO_PATH" -resize $IMAGE_SIZE -background "#$BACKGROUND_COLOR" -gravity center -extent $IMAGE_SIZE "$LOGO_UPLOAD_PATH"
-          
-            for file in $IMAGES_PATH/*; do
-              if [[ -f $file ]]; then
-                filename=$(basename -- "$file")
-                if file --mime-type "$file" | grep -qE 'image/(jpeg|png|gif|tiff|bmp)'; then
-                  if [[ $file == *.gif ]]; then
-                    convert "${file}[0]" -resize $IMAGE_SIZE -background "#$BACKGROUND_COLOR" -gravity center -extent $IMAGE_SIZE "${IMAGES_UPLOAD_PATH}/${filename}.png"
-                  else
-                    convert "$file" -resize $IMAGE_SIZE -background "#$BACKGROUND_COLOR" -gravity center -extent $IMAGE_SIZE "$IMAGES_UPLOAD_PATH/$filename"
-                  fi
-                fi
-              fi
-            done
-        - name: Zip images
-          run: |
-            zip -r -j "$IMAGE_ZIP" "$IMAGES_UPLOAD_PATH" "$LOGO_UPLOAD_PATH"
-        - name: Upload images to mod.io
-          run: |
-            curl "https://api.mod.io/v1/games/$MODIO_GAME/mods/$MODIO_MOD/media" \
-            -H "Authorization: Bearer $MODIO_TOKEN" \
-            -F "logo=@$LOGO_UPLOAD_PATH" \
-            -F "images=@$IMAGE_ZIP"
+      
