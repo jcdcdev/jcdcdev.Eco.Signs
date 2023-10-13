@@ -22,7 +22,7 @@ jobs:
         MODIO_TOKEN: "${{ secrets.MODIO_TOKEN }}"      
         # Internal variables
         BACKGROUND_COLOR: "0a1206"
-        IMAGE_SIZE: 1920x1080
+        IMAGE_SIZE: "1920x1080"
         LOGO_UPLOAD_PATH: "temp_upload/0000_logo.png"
         IMAGES_UPLOAD_PATH: "temp_upload"
     name: "Update modio mod assets"
@@ -100,7 +100,7 @@ jobs:
                   if [[ $file == *.gif ]]; then
                     cp "$file" "$IMAGES_UPLOAD_PATH/$filename"
                   else
-                    convert "$file" -resize $SIZE -background "#$BACKGROUND_COLOR" -gravity center -extent $SIZE "$IMAGES_UPLOAD_PATH/$filename"
+                    convert "$file" -resize $IMAGE_SIZE -background "#$BACKGROUND_COLOR" -gravity center -extent $IMAGE_SIZE "$IMAGES_UPLOAD_PATH/$filename"
                   fi
                 fi
               fi
