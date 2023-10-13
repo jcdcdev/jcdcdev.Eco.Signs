@@ -1,50 +1,94 @@
-name: Update modio mod description
+name: Sync modio mod assets
+
 on:
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
-    update_mod_description:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
-            - name: Install tools
-              run: |
-                sudo apt-get install pandoc
-                sudo apt-get install jq
-                sudo apt-get install zip
-            - name: Convert README to HTML
-              id: convert
-              run: | 
-                pandoc .github/README.md -o README.html
-                README_HTML_SINGLE_LINE=$(cat README.html | tr '\n' ' ')
-                README_ENCODED=$(echo -n "$README_HTML_SINGLE_LINE" | jq -s -R -r @uri)
-                echo "README_HTML=$(printf '%q' "$README_ENCODED")" >> $GITHUB_ENV
-            - name: Update modio mod description
-              run: |
-                curl -X PUT 'https://api.mod.io/v1/games/${{ secrets.MODIO_GAME }}/mods/${{ secrets.MODIO_MOD }}' \
+  update_mod_description:
+    runs-on: ubuntu-latest
+    env:
+        LOGO_PATH: "docs/logo.png"
+        RESIZED_LOGO_PATH: "0000_logo.png"
+        IMAGES_PATH: "docs/screenshots"
+        SIZE: "1920x1080"
+        BACKGROUND_COLOR: "0a1206"
+        PROJECT: "SIGNS"
+        DESIGN_ID: "${{ secrets.DESIGN_ID }}"
+        API_KEY: "${{ secrets.IMEJIS_KEY }}"
+        AUTHOR: "JCDC DEV"
+    name: "Update modio mod assets"
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Get latest release
+          run: |
+            LATEST_RELEASE=$(curl --silent "https://api.github.com/repos/${{ github.repository }}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+            echo "LATEST_RELEASE=$LATEST_RELEASE" >> $GITHUB_ENV
+        - name: Install tools
+          run: |
+            sudo apt-get install pandoc
+            sudo apt-get install jq
+            sudo apt-get install zip
+            sudo apt-get install imagemagick
+        - name: Convert README to HTML
+          id: convert
+          run: | 
+            pandoc .github/README.md -o README.html
+            README_HTML_SINGLE_LINE=$(cat README.html | tr '\n' ' ')
+            README_ENCODED=$(echo -n "$README_HTML_SINGLE_LINE" | jq -s -R -r @uri)
+            echo "README_HTML=$(printf '%q' "$README_ENCODED")" >> $GITHUB_ENV
+        - name: Update modio mod description
+          run: |
+            curl -X PUT 'https://api.mod.io/v1/games/${{ secrets.MODIO_GAME }}/mods/${{ secrets.MODIO_MOD }}' \
+            -H 'Authorization: Bearer ${{ secrets.MODIO_TOKEN }}' \
+            -d "description=${{ env.README_HTML }}" \
+            -d "homepage_url=${{ github.server_url }}/${{ github.repository }}"            
+        - name: Remove images from mod.io
+          run: |
+              RESPONSE=$(curl -s -H "Authorization: Bearer ${{secrets.MODIO_TOKEN}}" https://api.mod.io/v1/games/${{ secrets.MODIO_GAME }}/mods/${{ secrets.MODIO_MOD }})
+              IMAGES_JSON=$(echo "$RESPONSE" | jq -r '.media.images[] | @base64')
+              
+              for image in $IMAGES_JSON; do
+                filename=$(echo "$image" | base64 --decode | jq -r '.filename')
+                curl -X DELETE "https://api.mod.io/v1/games/${{ secrets.MODIO_GAME }}/mods/${{ secrets.MODIO_MOD }}/media" \
                 -H 'Authorization: Bearer ${{ secrets.MODIO_TOKEN }}' \
-                -d "description=${{ env.README_HTML }}" \
-                -d "homepage_url=${{ github.server_url }}/${{ github.repository }}"            
-            - name: Remove images from mod.io
-              run: |
-                  RESPONSE=$(curl -s -H "Authorization: Bearer ${{secrets.MODIO_TOKEN}}" https://api.mod.io/v1/games/${{ secrets.MODIO_GAME }}/mods/${{ secrets.MODIO_MOD }})
-                  IMAGES_JSON=$(echo "$RESPONSE" | jq -r '.media.images[] | @base64')
-                  for image in $IMAGES_JSON; do
-                    filename=$(echo "$image" | base64 --decode | jq -r '.filename')
-                    curl -X DELETE "https://api.mod.io/v1/games/${{ secrets.MODIO_GAME }}/mods/${{ secrets.MODIO_MOD }}/media" \
-                    -H 'Authorization: Bearer ${{ secrets.MODIO_TOKEN }}' \
-                    -d "images[]=$filename"
-                  done
-            - name: Upload images to mod.io
-              run: |
-                if [ ! -f "docs/logo.png" ]; then
-                    echo "docs/logo.png does not exist"
-                    text="${{ github.repository }}#${{ github.repository_owner }}/}"
-                    wget -O docs/logo.png "https://dummyimage.com/1280x720/000000/ffffff&text=${text}"
-                fi
-                zip -r -j images.zip docs/screenshots
-                curl "https://api.mod.io/v1/games/${{ secrets.MODIO_GAME }}/mods/${{ secrets.MODIO_MOD }}/media" \
-                -H 'Authorization: Bearer ${{ secrets.MODIO_TOKEN }}' \
-                -F logo=@docs/logo.png \
-                -F images=@images.zip
+                -d "images[]=$filename"
+              done
+        - name: Upload images to mod.io
+          run: |
+            JSON_DATA=$(cat <<EOF
+            {
+              "project": "$PROJECT",
+              "author": "$AUTHOR",
+              "version": "${{ env.LATEST_RELEASE }}"
+            }
+            EOF
+            )
+
+            if [ ! -f "$LOGO_PATH" ]; then
+                echo "$LOGO_PATH does not exist"
+                curl "https://api.imejis.io/api/designs/$DESIGN_ID" \
+                  --header "dma-api-key: $API_KEY" \
+                  --header 'Content-Type: application/json' \
+                  --data "$JSON_DATA" \
+                  --output $LOGO_PATH
+            fi
+
+            convert "$LOGO_PATH" -resize $SIZE -background "#$BACKGROUND_COLOR" -gravity center -extent $SIZE "$RESIZED_LOGO_PATH"
+          
+            for file in $IMAGES_PATH/*; do
+              if [[ -f $file ]]; then
+                filename=$(basename -- "$file")
+                extension="${filename##*.}"
+                filename="${filename%.*}"
+                convert "$file" -resize $SIZE -background "#$BACKGROUND_COLOR" -gravity center -extent $SIZE "$IMAGES_PATH/${filename}_resized.${extension}"
+              fi
+            done
+
+            zip -r -j images.zip $RESIZED_LOGO_PATH
+            zip -r -j images.zip $IMAGES_PATH/*_resized.*
+
+            curl "https://api.mod.io/v1/games/${{ secrets.MODIO_GAME }}/mods/${{ secrets.MODIO_MOD }}/media" \
+            -H 'Authorization: Bearer ${{ secrets.MODIO_TOKEN }}' \
+            -F logo=@$RESIZED_LOGO_PATH \
+            -F images=@images.zip
