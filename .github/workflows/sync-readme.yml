@@ -1,27 +1,28 @@
-name: Sync modio mod assets
+name: 'Sync mod.io README and Images'
 on:
   workflow_dispatch:
-  workflow_call:
+  repository_dispatch:
+    types: [sync-readme]
 jobs:
   sync_modio:
     runs-on: ubuntu-latest
-    name: "Update modio mod assets"
+    name: 'Sync mod.io README and Images'
     steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
-        - name: Sync with mod.io
-          uses: jcdcdev/jcdcdev.Modio.SyncDocs@main
-          with:
-            logoPath: "docs/logo.png"
-            imagesPath: "docs/screenshots"
-            readmePath: ".github/README.md"
-            projectAuthor: "JCDC DEV"
-            projectName: "SIGNS"
-            imejisGenerateImage: true
-            imejisDesignId: "${{ secrets.DESIGN_ID }}"
-            imejisKey: "${{ secrets.IMEJIS_KEY }}"
-            modioGame: "${{ secrets.MODIO_GAME }}"
-            modioMod: "${{ secrets.MODIO_MOD }}"
-            modioToken: "${{ secrets.MODIO_TOKEN }}"     
-            
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Sync with mod.io
+        uses: jcdcdev/jcdcdev.Modio.SyncDocs@main
+        with:
+          logoPath: "docs/logo.png"
+          imagesPath: "docs/screenshots"
+          readmePath: ".github/README.md"
+          projectAuthor: "JCDC DEV"
+          projectName: "SIGNS"
+          imejisGenerateImage: true
+          imejisDesignId: "${{ secrets.DESIGN_ID }}"
+          imejisKey: "${{ secrets.IMEJIS_KEY }}"
+          modioGame: "${{ secrets.MODIO_GAME }}"
+          modioMod: "${{ secrets.MODIO_MOD }}"
+          modioToken: "${{ secrets.MODIO_TOKEN }}"     
+          
       
