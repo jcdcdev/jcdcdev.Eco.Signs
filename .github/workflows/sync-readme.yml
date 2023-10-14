@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   workflow_call:
 jobs:
-  update_mod_description:
+  sync_modio:
     runs-on: ubuntu-latest
     name: "Update modio mod assets"
     steps:
