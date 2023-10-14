@@ -9,7 +9,7 @@ jobs:
     steps:
         - name: Checkout code
           uses: actions/checkout@v2
-        - name: Sync modio mod assets
+        - name: Sync with mod.io
           uses: jcdcdev/jcdcdev.Modio.SyncDocs@main
           with:
             logoPath: "docs/logo.png"
@@ -17,10 +17,9 @@ jobs:
             readmePath: ".github/README.md"
             projectAuthor: "JCDC DEV"
             projectName: "SIGNS"
-            # Imejis variables
+            imejisGenerateImage: true
             imejisDesignId: "${{ secrets.DESIGN_ID }}"
             imejisKey: "${{ secrets.IMEJIS_KEY }}"
-            # Mod.io variables
             modioGame: "${{ secrets.MODIO_GAME }}"
             modioMod: "${{ secrets.MODIO_MOD }}"
             modioToken: "${{ secrets.MODIO_TOKEN }}"     
