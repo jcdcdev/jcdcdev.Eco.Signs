@@ -4,9 +4,15 @@
 
 This mod extends the awesome Over9000SignPowerMod by adding patterns that I find useful on my server.
 
+## Install Steps
+- Download the latest version from https://mod.io/g/eco/m/jcdcdevecosigns
+- Extract the zip
+- Copy the extracted Mods folder into your Server's Mods folder
+- Make sure you also install [Over9000SignPowerMod](https://mod.io/g/eco/m/over9000signpowermod)
+- Start the server
+
 ### Instructions
 
-- Make sure you install [Over9000SignPowerMod](https://mod.io/g/eco/m/over9000signpowermod)
 - Place a sign
 - Enter one of the patterns below
 - Look at the sign
