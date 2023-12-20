@@ -13,16 +13,16 @@ jobs:
       - name: Sync with mod.io
         uses: jcdcdev/jcdcdev.Modio.SyncDocs@main
         with:
-          logoPath: "docs/logo.png"
-          imagesPath: "docs/screenshots"
-          readmePath: ".github/README.md"
-          projectAuthor: "JCDC DEV"
-          projectName: "SIGNS"
-          imejisGenerateImage: true
-          imejisDesignId: "${{ secrets.DESIGN_ID }}"
-          imejisKey: "${{ secrets.IMEJIS_KEY }}"
-          modioGame: "${{ secrets.MODIO_GAME }}"
-          modioMod: "${{ secrets.MODIO_MOD }}"
-          modioToken: "${{ secrets.MODIO_TOKEN }}"     
+          logo-path: "docs/logo.png"
+          images-path: "docs/screenshots"
+          readme-path: ".github/README.md"
+          project-author: "JCDC DEV"
+          project-name: "SIGNS"
+          imejis-generate-image: true
+          imejis-design-id: "${{ secrets.DESIGN_ID }}"
+          imejis-key: "${{ secrets.IMEJIS_KEY }}"
+          modio-game: "${{ secrets.MODIO_GAME }}"
+          modio-mod: "${{ secrets.MODIO_MOD }}"
+          modio-token: "${{ secrets.MODIO_TOKEN }}"     
           
       
