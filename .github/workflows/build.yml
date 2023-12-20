@@ -22,7 +22,7 @@ jobs:
       - name: Download, Extract, and Copy DLLs
         run: |
           mkdir ./src/lib
-          wget -O file.zip https://api.mod.io/v1/games/6/mods/2595901/files/3605377/download
+          wget -O file.zip https://api.mod.io/v1/games/6/mods/2595901/files/4698549/download
           unzip -d extracted_files file.zip
           find extracted_files -name "*.dll" -exec cp {} ./src/lib/ \;
       - name: Setup .NET
