@@ -10,8 +10,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="ElixrMods.Framework" Version="3.5.0"/>
-        <PackageReference Include="jcdcdev.Eco.Core" Version="0.4.0"/>
+        <PackageReference Include="ElixrMods.Framework" Version="3.5.2" />
+        <PackageReference Include="jcdcdev.Eco.Core" Version="0.4.1" />
     </ItemGroup>
     
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
