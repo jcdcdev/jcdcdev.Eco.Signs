@@ -115,5 +115,8 @@ jobs:
             Compare https://github.com/${{ github.repository }}/compare/${{ env.previous_tag }}...${{env.SEMVER}}
 
             ${{ steps.changelog.outputs.changelog }}
-      - name: Sync mod.io
-        uses: ./.github/workflows/sync-readme.yml
+  sync-readme:
+    uses: ./.github/workflows/sync-readme.yml
+    needs:
+      - deploy
+    name: Sync mod.io
