@@ -1,6 +1,7 @@
 name: 'Sync mod.io README and Images'
 on:
   workflow_dispatch:
+  workflow_call:
   repository_dispatch:
     types: [sync-readme]
 jobs:
