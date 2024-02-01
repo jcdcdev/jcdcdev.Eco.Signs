@@ -1,14 +1,17 @@
 ## jcdcdev.Eco.Signs
 
-![Eco Version](https://badgen.net/static/Eco/v0.10.1+) [![Latest version on Github](https://badgen.net/github/tag/jcdcdev/jcdcdev.Eco.Signs?label=Mod)](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/latest) [![Commits](https://badgen.net/github/commits/jcdcdev/jcdcdev.Eco.Signs)](https://github.com/jcdcdev/jcdcdev.Eco.Signs/commits/main)
+![Eco Version](https://badgen.net/static/Eco/v0.10.3+/3a93b4) 
+[![Latest version on Github](https://badgen.net/github/tag/jcdcdev/jcdcdev.Eco.Signs?color=3a93b4&label=Mod)](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/latest)
 
 This mod extends the awesome Over9000SignPowerMod by adding patterns that I find useful on my server.
 
 ## Install Steps
-- Download the latest version from https://mod.io/g/eco/m/jcdcdevecosigns
-- Extract the zip
-- Copy the extracted Mods folder into your Server's Mods folder
-- Make sure you also install [Over9000SignPowerMod](https://mod.io/g/eco/m/over9000signpowermod)
+- Download the latest version of this mod from [mod.io](https://mod.io/g/eco/m/jcdcdevecosigns)
+- Download the latest version of `jcdcdev.Eco.Core` from [mod.io](https://mod.io/g/eco/m/jcdcdevecocore)
+- Download the latest version of `Over9000SignPowerMod` from [mod.io](https://mod.io/g/eco/m/over9000signpowermod)
+- Extract each zip
+- Go to your Server's root folder
+- Copy the extracted content to `./Mods/UserCode`
 - Start the server
 
 ### Instructions
@@ -19,7 +22,7 @@ This mod extends the awesome Over9000SignPowerMod by adding patterns that I find
 - Run `/sign register`
 - Run `/sign stop` to make changes or to move sign
 
-## Patterns
+## Available Patterns
 
 ### Online Player Count
 
