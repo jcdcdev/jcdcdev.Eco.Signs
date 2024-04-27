@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jcdcdev.Eco.Signs", "jcdcdev.Eco.Signs\jcdcdev.Eco.Signs.csproj", "{27015631-EC1F-423C-9295-ED4792115151}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{7685A80B-4378-47E0-B2F4-F03A590C50AA}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\build.yml = ..\.github\workflows\build.yml
+		..\.github\workflows\release.yml = ..\.github\workflows\release.yml
+		..\.github\workflows\sync-readme.yml = ..\.github\workflows\sync-readme.yml
+		..\.github\README.md = ..\.github\README.md
+		..\.github\dependabot.yml = ..\.github\dependabot.yml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27015631-EC1F-423C-9295-ED4792115151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27015631-EC1F-423C-9295-ED4792115151}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27015631-EC1F-423C-9295-ED4792115151}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27015631-EC1F-423C-9295-ED4792115151}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

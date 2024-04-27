@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PROJECT_NAME: jcdcdev.Eco.Signs
-      PROJECT_PATH: ./src/jcdcdev.Eco.Signs.csproj
+      PROJECT_PATH: ./src/jcdcdev.Eco.Signs/jcdcdev.Eco.Signs.csproj
       BUILD_OUTPUT: ./build-output
       MOD_OUTPUT: ./build-assets/Mods/jcdcdev.Eco.Signs
       ASSET_NAME: jcdcdev.Eco.Signs-dev-${{ github.sha }}
@@ -30,7 +30,7 @@ jobs:
         with:
           dotnet-version: 7.0.x
       - name: Build project
-        run: dotnet build ${{ env.PROJECT_PATH }} -o ${{ env.MOD_OUTPUT }} --configuration Release 
+        run: dotnet build ${{ env.PROJECT_PATH }} -o ${{ env.MOD_OUTPUT }} --configuration Release
       - uses: vimtor/action-zip@v1
         with:
           files: ${{ env.ARTIFACT_OUTPUT }}

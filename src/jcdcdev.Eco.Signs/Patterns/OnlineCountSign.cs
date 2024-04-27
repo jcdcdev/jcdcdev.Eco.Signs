@@ -10,7 +10,7 @@ public class OnlineCountSign : IOver9000SignPowerModPluginTag
     public bool CanProcessed(WorldObject worldObject, User registrar) => true;
 
     public string ProcessTag(Match match, int tagNum, WorldObject worldObject, User registrar) =>
-        UserManager.OnlineUsers.Count.ToString();
+        UserManager.Users.Count(x => x.IsOnline).ToString();
 
     public string TagName => "onlineCount";
     public bool Enabled => true;

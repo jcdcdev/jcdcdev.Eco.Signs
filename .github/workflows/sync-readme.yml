@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   workflow_call:
   repository_dispatch:
-    types: [sync-readme]
+    types: [ sync-readme ]
 jobs:
   sync_modio:
     runs-on: ubuntu-latest

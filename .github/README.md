@@ -1,11 +1,12 @@
 ## jcdcdev.Eco.Signs
 
-![Eco Version](https://badgen.net/static/Eco/v0.10.3+/3a93b4) 
+![Eco Version](https://badgen.net/static/Eco/v0.10.2.1+/3a93b4)
 [![Latest version on Github](https://badgen.net/github/tag/jcdcdev/jcdcdev.Eco.Signs?color=3a93b4&label=Mod)](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/latest)
 
 This mod extends the awesome Over9000SignPowerMod by adding patterns that I find useful on my server.
 
 ## Install Steps
+
 - Download the latest version of this mod from [mod.io](https://mod.io/g/eco/m/jcdcdevecosigns)
 - Download the latest version of `jcdcdev.Eco.Core` from [mod.io](https://mod.io/g/eco/m/jcdcdevecocore)
 - Download the latest version of `Over9000SignPowerMod` from [mod.io](https://mod.io/g/eco/m/over9000signpowermod)
