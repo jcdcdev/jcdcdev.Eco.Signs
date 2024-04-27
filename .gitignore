@@ -73,4 +73,5 @@ bin/
 obj/
 */.idea/
 **/.idea/
-*.orig/src/lib/
+*.orig
+/src/jcdcdev.Eco.Signs/lib/

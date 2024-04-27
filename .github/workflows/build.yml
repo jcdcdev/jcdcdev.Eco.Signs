@@ -21,10 +21,10 @@ jobs:
         uses: actions/checkout@v3
       - name: Download, Extract, and Copy DLLs
         run: |
-          mkdir ./src/lib
-          wget -O file.zip https://api.mod.io/v1/games/6/mods/2595901/files/4698549/download
+          mkdir ./src/jcdcdev.Eco.Signs/lib
+          wget -O file.zip https://api.mod.io/v1/games/6/mods/2595901/files/4716764/download
           unzip -d extracted_files file.zip
-          find extracted_files -name "*.dll" -exec cp {} ./src/lib/ \;
+          find extracted_files -name "*.dll" -exec cp {} ./src/jcdcdev.Eco.Signs/lib \;
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
