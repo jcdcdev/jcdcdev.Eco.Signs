@@ -1,0 +1,43 @@
+name: '🔄 Update jcdcdev.Eco.Core NuGet Package'
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0,12 * * *'
+jobs:
+  sync-eco-package:
+    runs-on: ubuntu-latest
+    name: '🔧 Sync jcdcdev.Eco.Core NuGet Package'
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      packageId: 'jcdcdev.Eco.Core'
+    steps:
+      - name: 📋 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: 🚀 Execute script
+        id: sync-eco-package
+        shell: pwsh
+        run: |
+          Push-Location -Path ./src
+
+          $result = ./update-nuget-package.ps1 -projectFilePath "./jcdcdev.Eco.Signs/jcdcdev.Eco.Signs.csproj" -packageId $env:packageId
+          Write-Output "updated=$($result.Updated)" >> $env:GITHUB_OUTPUT
+          Write-Output "target-version=$($result.TargetVersion)" >> $env:GITHUB_OUTPUT
+          Write-Output "source-version=$($result.SourceVersion)" >> $env:GITHUB_OUTPUT
+
+          Pop-Location
+      - name: 🤖 Make Pull Request
+        if: steps.sync-eco-package.outputs.updated == 'true'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "feature: Support Eco ${{ steps.sync-eco-package.outputs.target-version }}"
+          title: "Update ${{ env.packageId }} to ${{ steps.sync-eco-package.outputs.target-version }}"
+          body: "This PR updates the ${{ env.packageId }} NuGet package from ${{ steps.sync-eco-package.outputs.source-version }} to ${{ steps.sync-eco-package.outputs.target-version }}."
+          branch: "update-${{ env.packageId }}-from-${{ steps.sync-eco-package.outputs.source-version }}-to-${{ steps.sync-eco-package.outputs.target-version }}"
+          labels: "automated"
+          reviewers: "jcdcdev"
+          assignees: "jcdcdev"
