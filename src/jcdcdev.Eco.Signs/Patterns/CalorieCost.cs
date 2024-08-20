@@ -6,7 +6,7 @@ using Over9000SignPowerMod.Plugins.Interfaces;
 
 namespace jcdcdev.Eco.Signs.Patterns;
 
-public class CalorieCost : IOver9000SignPowerModPluginTag
+public partial class CalorieCost : IOver9000SignPowerModPluginTag
 {
     public bool CanProcessed(WorldObject worldObject, User registrar) => true;
 
@@ -38,5 +38,8 @@ public class CalorieCost : IOver9000SignPowerModPluginTag
 
     public string TagName => "calorieCost";
     public bool Enabled => true;
-    public Regex TagRegex => new("</calorieCost(.*?)>", RegexOptions.Compiled);
+    public Regex TagRegex => Pattern();
+
+    [GeneratedRegex("</calorieCost(.*?)>", RegexOptions.Compiled)]
+    private static partial Regex Pattern();
 }

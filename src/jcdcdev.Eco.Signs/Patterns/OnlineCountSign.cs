@@ -5,7 +5,7 @@ using Over9000SignPowerMod.Plugins.Interfaces;
 
 namespace jcdcdev.Eco.Signs.Patterns;
 
-public class OnlineCountSign : IOver9000SignPowerModPluginTag
+public partial class OnlineCountSign : IOver9000SignPowerModPluginTag
 {
     public bool CanProcessed(WorldObject worldObject, User registrar) => true;
 
@@ -14,5 +14,8 @@ public class OnlineCountSign : IOver9000SignPowerModPluginTag
 
     public string TagName => "onlineCount";
     public bool Enabled => true;
-    public Regex TagRegex => new("</onlineCount>", RegexOptions.Compiled);
+    public Regex TagRegex => Pattern();
+
+    [GeneratedRegex("</onlineCount>", RegexOptions.Compiled)]
+    private static partial Regex Pattern();
 }

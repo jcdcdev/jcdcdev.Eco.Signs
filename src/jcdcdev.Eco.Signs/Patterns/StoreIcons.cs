@@ -9,7 +9,7 @@ using Over9000SignPowerMod.Plugins.Interfaces;
 
 namespace jcdcdev.Eco.Signs.Patterns;
 
-public class StoreIcons : IOver9000SignPowerModPluginTag
+public partial class StoreIcons : IOver9000SignPowerModPluginTag
 {
     private readonly ConcurrentDictionary<Guid, int> _count = new();
 
@@ -109,9 +109,12 @@ public class StoreIcons : IOver9000SignPowerModPluginTag
 
     public string TagName => "store";
     public bool Enabled => true;
-    public Regex TagRegex => new("</store (.*?)>", RegexOptions.Compiled);
+    public Regex TagRegex => Pattern();
 
-    private int GetCurrentTick(Guid objectId) => _count.TryGetValue(objectId, out var value) ? value : 1;
+    private int GetCurrentTick(Guid objectId) => _count.GetValueOrDefault(objectId, 1);
 
     private void SetNextTick(Guid objectId, int tick) => _count[objectId] = tick;
+    
+    [GeneratedRegex("</store (.*?)>", RegexOptions.Compiled)]
+    private static partial Regex Pattern();
 }

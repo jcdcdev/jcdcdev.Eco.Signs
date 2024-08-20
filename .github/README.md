@@ -31,6 +31,21 @@ This mod extends the awesome Over9000SignPowerMod by adding patterns that I find
 
 ![onlineCount.png](https://github.com/jcdcdev/jcdcdev.Eco.Signs/blob/main/docs/screenshots/onlineCount.png?raw=true)
 
+### Bank Account Balance
+
+Displays the bank account balance for the specified player.
+
+`</bankAccount playerName currency i n>`
+
+![bankAccount.png](https://github.com/jcdcdev/jcdcdev.Eco.Signs/blob/main/docs/screenshots/bankAccount.png?raw=true)
+
+#### Settings
+
+- **playerName** - required - name of the player
+- **currency** - currency to display - required if player holds multiple currencies
+- **i** - include an icon
+- **n** - include the currency name
+
 ### Calorie Cost
 
 Displays the average cost of 1000 calories across all food items currently for sale. Updates every 10 seconds.
