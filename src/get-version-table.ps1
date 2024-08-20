@@ -1,5 +1,4 @@
 ﻿param (
-    [string]$ProjectFilePath,
     [string]$ProjectId
 )
 
@@ -145,7 +144,8 @@ function Check-Tags
 
     return $results
 }
-
+$csprojFiles = Get-ChildItem -Path . -Filter "*.csproj" -Recurse
+$ProjectFilePath = $csprojFiles[0].FullName
 $PackageId = "jcdcdev.eco.core"
 if ($ProjectFilePath -eq $null)
 {

@@ -19,7 +19,7 @@ jobs:
       - name: Get README
         id: get-readme
         run: |
-          result=$(pwsh ./src/get-version-table.ps1 -ProjectFilePath "./src/jcdcdev.Eco.Signs/jcdcdev.Eco.Signs.csproj" -PackageId "jcdcdev.Eco.Signs")
+          result=$(pwsh ./src/get-version-table.ps1 -PackageId "jcdcdev.Eco.Signs")
           {
             echo 'result<<EOF'
             echo "${result}"
