@@ -1,4 +1,4 @@
-name: 'Sync mod.io README and Images'
+name: '📚 Sync mod.io README and Images'
 on:
   workflow_dispatch:
   workflow_call:
@@ -8,9 +8,46 @@ jobs:
   sync_modio:
     runs-on: ubuntu-latest
     name: 'Sync mod.io README and Images'
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get README
+        id: get-readme
+        run: |
+          result=$(pwsh ./src/get-version-table.ps1 -ProjectFilePath "./src/jcdcdev.Eco.Signs/jcdcdev.Eco.Signs.csproj" -PackageId "jcdcdev.Eco.Signs")
+          {
+            echo 'result<<EOF'
+            echo "${result}"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Update README
+        shell: pwsh
+        run: |
+          $result = "${{ steps.get-readme.outputs.result }}"
+          git config user.name "$env:GITHUB_ACTOR"
+          git config user.email "$env:GITHUB_ACTOR_ID+$env:GITHUB_ACTOR@users.noreply.github.com"
+
+          $readme = Get-Content -Path ".github/README.md" -Raw
+          $regex = '(## Version Table[\S\s]*)'
+          $newReadme = $readme -replace $regex, "## Version Table`n$result"
+          Write-Host "new readme=$newReadme"
+
+          if ($newReadme -eq $readme) {
+            Write-Host "No changes to README"
+            exit 0
+          }
+
+          Set-Content -Path ".github/README.md" -Value $newReadme
+          git add .github/README.md
+          git commit -m "doc: Update version table"
+          git push origin
       - name: Sync with mod.io
         uses: jcdcdev/jcdcdev.Modio.SyncDocs@main
         with:

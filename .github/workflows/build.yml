@@ -1,4 +1,4 @@
-name: Build mod
+name: '🏗️ Build mod'
 
 on:
   pull_request:

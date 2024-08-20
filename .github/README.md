@@ -75,3 +75,5 @@ These can be added/removed to your preference
 ## Feedback
 
 Leave a comment if you have any suggestions or feature requests.
+
+## Version Table
