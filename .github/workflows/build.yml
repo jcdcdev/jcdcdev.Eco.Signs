@@ -22,7 +22,7 @@ jobs:
       - name: Download, Extract, and Copy DLLs
         run: |
           mkdir ./src/jcdcdev.Eco.Signs/lib
-          wget -O file.zip https://api.mod.io/v1/games/6/mods/2595901/files/4716764/download
+          wget -O file.zip https://api.mod.io/v1/games/6/mods/2595901/files/5475460/download
           unzip -d extracted_files file.zip
           find extracted_files -name "*.dll" -exec cp {} ./src/jcdcdev.Eco.Signs/lib \;
       - name: Setup .NET
