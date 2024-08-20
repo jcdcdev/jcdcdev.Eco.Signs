@@ -102,10 +102,6 @@ function Get-EcoVersionFromPackage
 
 function Check-Tags
 {
-    param (
-        [string]$csprojPath
-    )
-
     git fetch --all --tags
 
     $tags = git tag
