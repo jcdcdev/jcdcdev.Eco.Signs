@@ -77,3 +77,17 @@ These can be added/removed to your preference
 Leave a comment if you have any suggestions or feature requests.
 
 ## Version Table
+| Version | Core Version | Game Version |
+|-----|---------| -----------|
+| [0.5.2](https://github.com/jcdcdev//releases/tag/0.5.2) | [0.5.2](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/0.5.2) | 10.2.3 |
+| [0.5.1](https://github.com/jcdcdev//releases/tag/0.5.1) | [0.5.1](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/0.5.1) | 10.2.2 |
+| [0.5.0](https://github.com/jcdcdev//releases/tag/0.5.0) | [0.5.0](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/0.5.0) | 10.2.1 |
+| [0.4.1](https://github.com/jcdcdev//releases/tag/0.4.1) | N/A | N/A |
+| [0.4.0](https://github.com/jcdcdev//releases/tag/0.4.0) | N/A | N/A |
+| [0.3.0](https://github.com/jcdcdev//releases/tag/0.3.0) | N/A | N/A |
+| [0.2.2](https://github.com/jcdcdev//releases/tag/0.2.2) | N/A | N/A |
+| [0.2.1](https://github.com/jcdcdev//releases/tag/0.2.1) | N/A | N/A |
+| [0.2.0](https://github.com/jcdcdev//releases/tag/0.2.0) | N/A | N/A |
+| [0.1.1](https://github.com/jcdcdev//releases/tag/0.1.1) | N/A | N/A |
+| [0.1.0](https://github.com/jcdcdev//releases/tag/0.1.0) | N/A | N/A |
+| [0.0.0](https://github.com/jcdcdev//releases/tag/0.0.0) | N/A | N/A |
