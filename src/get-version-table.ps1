@@ -103,7 +103,6 @@ function Get-EcoVersionFromPackage
 function Check-Tags
 {
     param (
-        [string]$packageId,
         [string]$csprojPath
     )
 
@@ -115,7 +114,13 @@ function Check-Tags
     foreach ($tag in $tags)
     {
         git checkout $tag --quiet
-
+        $csprojFiles = Get-ChildItem -Path . -Filter "*.csproj" -Recurse
+        $csprojPath = $csprojFiles[0].FullName
+        if ($csprojPath -eq $null)
+        {
+            Write-Output "No .csproj file found. Skipping."
+            continue
+        }
         $version = Get-PackageVersion -csprojPath $csprojPath -packageId $packageId
         if ($version -eq "N/A")
         {
@@ -144,16 +149,10 @@ function Check-Tags
 
     return $results
 }
-$csprojFiles = Get-ChildItem -Path . -Filter "*.csproj" -Recurse
-$ProjectFilePath = $csprojFiles[0].FullName
-$PackageId = "jcdcdev.eco.core"
-if ($ProjectFilePath -eq $null)
-{
-    Write-Output "No .csproj file selected. Exiting."
-    exit
-}
 
-$results = Check-Tags -packageId $PackageId -csprojPath $ProjectFilePath
+$PackageId = "jcdcdev.eco.core"
+
+$results = Check-Tags -packageId $PackageId
 $markdownTable = @"
 | Version | Core Version | Game Version |
 |-----|---------| -----------|`n
