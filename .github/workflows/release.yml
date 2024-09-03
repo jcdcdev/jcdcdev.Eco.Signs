@@ -77,7 +77,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Download package
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: ${{ env.ASSET_NAME }}
       - run: echo "previous_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo '')" >> $GITHUB_ENV
