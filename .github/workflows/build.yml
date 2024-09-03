@@ -18,7 +18,7 @@ jobs:
       ARTIFACT_OUTPUT: ./build-assets
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Download, Extract, and Copy DLLs
         run: |
           mkdir ./src/jcdcdev.Eco.Signs/lib
@@ -36,7 +36,7 @@ jobs:
           files: ${{ env.ARTIFACT_OUTPUT }}
           dest: ${{ env.ASSET_NAME }}.zip
       - name: Upload package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ASSET_NAME }}
           path: ${{ env.ASSET_NAME }}.zip
