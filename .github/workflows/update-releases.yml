@@ -16,3 +16,4 @@ jobs:
     with:
       start-version: ${{ inputs.start-version}}
       end-version: ${{ inputs.end-version}}
+      rich-format: false 
