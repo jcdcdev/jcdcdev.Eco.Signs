@@ -93,6 +93,7 @@ Leave a comment if you have any suggestions or feature requests.
 ## Version Table
 | Version | Core Version | Game Version |
 |-----|---------| -----------|
+| [11.0.5](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/11.0.5) | [11.0.4](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/11.0.4) | 11.0.3 |
 | [11.0.4](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/11.0.4) | [11.0.3](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/11.0.3) | 11.0.3 |
 | [11.0.3](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/11.0.3) | [11.0.2](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/11.0.2) | 11.0.2 |
 | [11.0.2](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/11.0.2) | [11.0.1](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/11.0.1) | 11.0.1 |
@@ -109,3 +110,4 @@ Leave a comment if you have any suggestions or feature requests.
 | [0.2.0](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/0.2.0) | [0.1.4](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/0.1.4) | 9.7.10 |
 | [0.1.1](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/0.1.1) | N/A | 9.7.10 |
 | [0.1.0](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/0.1.0) | N/A | 9.7.10 |
+| [](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/) | [](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/) |  |
