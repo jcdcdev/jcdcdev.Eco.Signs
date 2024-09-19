@@ -2,7 +2,7 @@ name: '🔄 Update jcdcdev.Eco.Core NuGet Package'
 on:
   workflow_dispatch:
   schedule:
-    - cron: '15 0,12-16 * * *'
+    - cron: '15,45 0,12-16 * * *'
 jobs:
   sync-eco-package:
     runs-on: ubuntu-latest
