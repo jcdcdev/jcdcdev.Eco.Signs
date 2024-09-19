@@ -75,7 +75,6 @@ jobs:
       - name: Create Release
         id: create-release
         uses: jcdcdev/jcdcdev.GitHub.CreateRelease@main
-        if: false
         with:
           artifact-name: ${{ env.ASSET_NAME }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -86,7 +85,6 @@ jobs:
         with:
           name: ${{ env.ASSET_NAME }}
       - uses: nickelc/upload-to-modio@v2.1.0
-        if: false
         with:
           token: ${{ secrets.MODIO_TOKEN }}
           game: ${{ secrets.MODIO_GAME }}
