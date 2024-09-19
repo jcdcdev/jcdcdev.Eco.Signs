@@ -40,3 +40,13 @@ jobs:
         with:
           name: ${{ env.ASSET_NAME }}
           path: ${{ env.ASSET_NAME }}.zip
+  sync-readme:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Sync README
+        uses: ./.github/workflows/sync-readme
