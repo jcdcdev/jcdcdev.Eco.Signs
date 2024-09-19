@@ -2,31 +2,27 @@
     [string]$ProjectId
 )
 
-function To-GameVer
-{
+function To-GameVer {
     param (
         [string]$version
     )
     $semVer = $version -replace "-.*" -replace "[^0-9.]"
     $semVer = $semVer.Split('.')
     $utput = "$( $semVer[1] ).$( $semVer[2] )"
-    if ($semVer[3])
-    {
+    if ($semVer[3]) {
         $utput += ".$( $semVer[3] )"
     }
     return $utput
 }
 
-function Sanitize-VersionRange
-{
+function Sanitize-VersionRange {
     param (
         [string]$range
     )
     return ($range -replace "[\[\]\(\)]", "").Split(',')[0]
 }
 
-function Check-Dependencies
-{
+function Check-Dependencies {
     param (
         [string]$catalogEntryUrl
     )
@@ -36,13 +32,11 @@ function Check-Dependencies
     $catalogEntry.dependencyGroups | ForEach-Object { $_.dependencies | ForEach-Object { $dependencies += $_ } }
 
     $ecoReferenceAssemblies = $dependencies | Where-Object { $_.id -eq "Eco.ReferenceAssemblies" }
-    if ($ecoReferenceAssemblies)
-    {
+    if ($ecoReferenceAssemblies) {
         return Sanitize-VersionRange -range $ecoReferenceAssemblies.range
     }
     $elixrModsFramework = $dependencies | Where-Object { $_.id -eq "ElixrMods.Framework" }
-    if ($elixrModsFramework)
-    {
+    if ($elixrModsFramework) {
         $cleanRange = Sanitize-VersionRange -range $elixrModsFramework.range
         $elixrModsFrameworkUrl = "https://api.nuget.org/v3/registration5-gz-semver2/elixrmods.framework/$cleanRange.json"
         $elixrModsFrameworkResponse = Invoke-RestMethod -Uri $elixrModsFrameworkUrl
@@ -52,23 +46,19 @@ function Check-Dependencies
         $elixrModsFrameworkCatalogResponse.dependencyGroups | ForEach-Object { $_.dependencies | ForEach-Object { $deps += $_ } }
 
         $ecoReferenceAssembliesInFramework = $deps | Where-Object { $_.id -eq "Eco.ReferenceAssemblies" } | Select-Object -First 1
-        if ($ecoReferenceAssembliesInFramework)
-        {
+        if ($ecoReferenceAssembliesInFramework) {
             return Sanitize-VersionRange -range $( $ecoReferenceAssembliesInFramework.range )
         }
-        else
-        {
+        else {
             return "N/A"
         }
     }
-    else
-    {
+    else {
         return "N/A"
     }
 }
 
-function Get-PackageVersion
-{
+function Get-PackageVersion {
     param (
         [string]$csprojPath,
         [string]$packageId
@@ -77,18 +67,15 @@ function Get-PackageVersion
     [xml]$csproj = Get-Content -Path $csprojPath
     $namespace = @{ msb = "http://schemas.microsoft.com/developer/msbuild/2003" }
     $packageReference = $csproj.Project.ItemGroup.PackageReference | Where-Object { $_.Include -eq $packageId }
-    if ($packageReference)
-    {
+    if ($packageReference) {
         return Sanitize-VersionRange -range $packageReference.Version
     }
-    else
-    {
+    else {
         return "N/A"
     }
 }
 
-function Get-EcoVersionFromPackage
-{
+function Get-EcoVersionFromPackage {
     param (
         [string]$packageId,
         [string]$version
@@ -100,45 +87,39 @@ function Get-EcoVersionFromPackage
     return To-GameVer -version $ecoVersion
 }
 
-function Check-Tags
-{
+function Check-Tags {
     git fetch --all --tags
 
     $tags = git tag
 
     $results = @()
-    foreach ($tag in $tags)
-    {
+    foreach ($tag in $tags) {
         git checkout $tag --quiet
         $csprojFiles = Get-ChildItem -Path . -Filter "*.csproj" -Recurse
-        $csprojPath = $csprojFiles[0].FullName
-        if ($csprojPath -eq $null)
-        {
-            Write-Output "No .csproj file found. Skipping."
+        if ($csprojFiles.Count -eq 0) {
+            Write-Output "No .csproj files found for tag $tag. Skipping."
             continue
         }
+
+        $csprojPath = $csprojFiles[0].FullName
         $version = Get-PackageVersion -csprojPath $csprojPath -packageId $packageId
-        if ($version -eq "N/A")
-        {
+        if ($version -eq "N/A") {
             $ya = "elixrmods.framework"
             $yaversion = Get-PackageVersion -csprojPath $csprojPath -packageId $ya
-            if ($yaversion -eq "N/A")
-            {
+            if ($yaversion -eq "N/A") {
                 $ecoVersion = "N/A"
             }
-            else
-            {
+            else {
                 $ecoVersion = Get-EcoVersionFromPackage -packageId $ya -version $yaversion
             }
         }
-        else
-        {
+        else {
             $ecoVersion = Get-EcoVersionFromPackage -packageId $packageId -version $version
         }
         $results += [PSCustomObject]@{
-            Tag = $tag
-            FilePath = $csprojPath
-            Version = $version
+            Tag        = $tag
+            FilePath   = $csprojPath
+            Version    = $version
             EcoVersion = $ecoVersion
         }
     }
@@ -157,12 +138,10 @@ $markdownTable = @"
 $results = $results | Sort-Object -Property Tag -Descending
 
 $results | ForEach-Object {
-    if ($_.Version -eq "N/A")
-    {
+    if ($_.Version -eq "N/A") {
         $versionTxt = "N/A"
     }
-    else
-    {
+    else {
         $versionTxt = "[$( $_.Version )](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/$( $_.Version ))"
     }
     $tagTxt = "[$( $_.Tag )](https://github.com/jcdcdev/$ProjectId/releases/tag/$( $_.Tag ))"
