@@ -51,4 +51,4 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Sync README
-        uses: ./.github/workflows/sync-readme.yml@main
+        uses: jcdcdev/jcdcdev.Eco.Signs/.github/workflows/sync-readme.yml@main
