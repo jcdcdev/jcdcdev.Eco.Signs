@@ -93,3 +93,10 @@ jobs:
           path: ${{ env.ASSET_NAME }}.zip
           active: true
           changelog: ${{ steps.create-release.outputs.changelog }}
+  sync-readme:
+    needs:
+      - deploy
+    uses: ./.github/workflows/sync-readme.yml
+    permissions:
+      contents: write
+      pull-requests: write
