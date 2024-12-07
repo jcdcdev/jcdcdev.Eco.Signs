@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="jcdcdev.Eco.Core" Version="11.1.3"              />
+        <PackageReference Include="jcdcdev.Eco.Core" Version="11.1.4"               />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
