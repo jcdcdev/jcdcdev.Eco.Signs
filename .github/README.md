@@ -101,6 +101,7 @@ Leave a comment if you have any suggestions or feature requests.
 | [11.1.4](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/11.1.4) | [11.1.4](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/11.1.4) | 11.1.4 |
 | [11.1.3](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/11.1.3) | [11.1.3](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/11.1.3) | 11.1.3 |
 | [11.1.2](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/11.1.2) | [11.1.2](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/11.1.2) | 11.1.2 |
+| [11.1.12](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/11.1.12) | [11.1.12](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/11.1.12) | 11.1.12 |
 | [11.1.11](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/11.1.11) | [11.1.11](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/11.1.11) | 11.1.11 |
 | [11.1.10](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/11.1.10) | [11.1.10](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/11.1.10) | 11.1.10 |
 | [11.1.1](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/11.1.1) | [11.1.1](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/11.1.1) | 11.1.1 |
