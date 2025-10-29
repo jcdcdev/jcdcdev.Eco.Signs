@@ -8,7 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{7685A80B
 		..\.github\workflows\release.yml = ..\.github\workflows\release.yml
 		..\.github\workflows\sync-readme.yml = ..\.github\workflows\sync-readme.yml
 		..\.github\README.md = ..\.github\README.md
-		..\.github\dependabot.yml = ..\.github\dependabot.yml
 	EndProjectSection
 EndProject
 Global

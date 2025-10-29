@@ -41,11 +41,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Download, Extract, and Copy DLLs
+        shell: pwsh
         run: |
-          mkdir ./src/jcdcdev.Eco.Signs/lib
-          wget -O file.zip https://api.mod.io/v1/games/6/mods/2595901/files/5475460/download
-          unzip -d extracted_files file.zip
-          find extracted_files -name "*.dll" -exec cp {} ./src/jcdcdev.Eco.Signs/lib \;
+          Push-Location ./src
+          pwsh ./download-dependencies.ps1 -WorkingDir "./src"
+          Pop-Location
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
