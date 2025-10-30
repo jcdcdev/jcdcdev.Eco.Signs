@@ -54,7 +54,7 @@ jobs:
           logo-path: "docs/logo.png"
           images-path: "docs/screenshots"
           readme-path: ".github/README.md"
-          project-author: "JCDC DEV"
+          project-author: "ECO.JCDC.DEV"
           project-name: "SIGNS"
           imejis-generate-image: true
           imejis-design-id: "${{ secrets.DESIGN_ID }}"
