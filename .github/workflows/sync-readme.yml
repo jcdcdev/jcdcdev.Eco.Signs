@@ -1,13 +1,13 @@
-name: '📚 Sync mod.io README and Images'
+name: "📚 Sync mod.io README and Images"
 on:
   workflow_dispatch:
   workflow_call:
   repository_dispatch:
-    types: [ sync-readme ]
+    types: [sync-readme]
 jobs:
   sync_modio:
     runs-on: ubuntu-latest
-    name: 'Sync mod.io README and Images'
+    name: "Sync mod.io README and Images"
     permissions:
       contents: write
       pull-requests: write
@@ -24,7 +24,7 @@ jobs:
             echo 'result<<EOF'
             echo "${result}"
             echo EOF
-          } >> "$GITHUB_OUTPUT"      
+          } >> "$GITHUB_OUTPUT"
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Update README
@@ -61,6 +61,5 @@ jobs:
           imejis-key: "${{ secrets.IMEJIS_KEY }}"
           modio-game: "${{ secrets.MODIO_GAME }}"
           modio-mod: "${{ secrets.MODIO_MOD }}"
-          modio-token: "${{ secrets.MODIO_TOKEN }}"     
-          
-      
+          modio-token: "${{ secrets.MODIO_TOKEN }}"
+          background-color: "#222F1B"
