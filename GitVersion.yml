@@ -1,0 +1,22 @@
+workflow: GitFlow/v1
+mode: ContinuousDeployment
+branches:
+    dev:
+        regex: ^dev$
+        label: alpha
+    pull-request:
+        regex: (pull|pull\-requests|pr)[/-]
+        mode: ContinuousDelivery
+        label: pr
+        increment: Inherit
+        track-merge-target: false
+        tracks-release-branches: false
+        is-release-branch: false
+    update:
+        regex: (update|updates)[/-]
+        mode: ContinuousDelivery
+        label: update
+        increment: Inherit
+        track-merge-target: false
+        tracks-release-branches: false
+        is-release-branch: false
