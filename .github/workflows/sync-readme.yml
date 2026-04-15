@@ -13,7 +13,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Get README
@@ -26,7 +26,7 @@ jobs:
             echo EOF
           } >> "$GITHUB_OUTPUT"
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Update README
         shell: pwsh
         run: |
@@ -40,8 +40,8 @@ jobs:
           Write-Host "new readme=$newReadme"
 
           if ($newReadme -eq $readme) {
-            Write-Host "No changes to README"
-            exit 0
+              Write-Host "No changes to README"
+              exit 0
           }
 
           Set-Content -Path ".github/README.md" -Value $newReadme
@@ -49,7 +49,7 @@ jobs:
           git commit -m "doc: Update version table"
           git push origin
       - name: Sync with mod.io
-        uses: jcdcdev/jcdcdev.Modio.SyncDocs@main
+        uses: jcdcdev/jcdcdev.Github.ModioSyncDocs@0.1.24
         with:
           logo-path: "docs/logo.png"
           images-path: "docs/screenshots"

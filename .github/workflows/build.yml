@@ -1,13 +1,16 @@
-name: '🏗️ Build mod'
+name: "🏗️ Build mod"
+run-name: >
+  build ${{github.repository}} #${{ github.run_number }}
 
 on:
   pull_request:
-    branches: "*"
+    branches:
+      - "*"
   workflow_dispatch:
 
 jobs:
   build:
-
+    name: build
     runs-on: ubuntu-latest
     env:
       PROJECT_NAME: jcdcdev.Eco.Signs
@@ -18,7 +21,7 @@ jobs:
       ARTIFACT_OUTPUT: ./build-assets
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Download, Extract, and Copy DLLs
         shell: pwsh
         run: |
@@ -26,9 +29,9 @@ jobs:
           pwsh ./download-dependencies.ps1 -WorkingDir "./src"
           Pop-Location
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 10.0.x
       - name: Build project
         run: dotnet build ${{ env.PROJECT_PATH }} -o ${{ env.MOD_OUTPUT }} --configuration Release
       - uses: vimtor/action-zip@v1
@@ -36,7 +39,7 @@ jobs:
           files: ${{ env.ARTIFACT_OUTPUT }}
           dest: ${{ env.ASSET_NAME }}.zip
       - name: Upload package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.ASSET_NAME }}
           path: ${{ env.ASSET_NAME }}.zip

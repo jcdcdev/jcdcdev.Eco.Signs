@@ -1,33 +1,36 @@
-name: '🚀 Release mod'
+name: "🚀 Release mod"
 run-name: >
-  push ${{github.repository}} #${{ github.run_number }}
+  release ${{github.repository}} #${{ github.run_number }}
+
 on:
   pull_request:
     branches:
       - main
-    types: [ closed ]
+    types: [closed]
   workflow_dispatch:
 
 jobs:
   determine-version:
+    name: determine version
     runs-on: ubuntu-latest
     outputs:
       semVer: ${{ steps.gitversion.outputs.semVer }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0
+        uses: gittools/actions/gitversion/setup@v4.5.0
         with:
-          versionSpec: '5.x'
+          versionSpec: "6.7.x"
       - name: Determine Version
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v0
+        uses: gittools/actions/gitversion/execute@v4.5.0
   build:
     name: build ${{ needs.determine-version.outputs.semVer }}
     runs-on: ubuntu-latest
-    needs: determine-version
+    needs:
+      - determine-version
     env:
       SEMVER: ${{ needs.determine-version.outputs.semVer }}
       ASSET_NAME: jcdcdev.Eco.Signs-${{ needs.determine-version.outputs.semVer }}
@@ -39,7 +42,7 @@ jobs:
       assetName: ${{ env.ASSET_NAME }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Download, Extract, and Copy DLLs
         shell: pwsh
         run: |
@@ -47,21 +50,22 @@ jobs:
           pwsh ./download-dependencies.ps1 -WorkingDir "./src"
           Pop-Location
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 10.0.x
       - name: Build project
         run: dotnet build ${{ env.PROJECT_PATH }} -o ${{ env.MOD_OUTPUT }} --configuration Release -p:Version=${{ env.SEMVER }}
-      - uses: vimtor/action-zip@v1
+      - uses: vimtor/action-zip@v1.3
         with:
           files: ${{ env.ARTIFACT_OUTPUT }}
           dest: ${{ env.ASSET_NAME }}.zip
-      - name: Upload package
-        uses: actions/upload-artifact@v4
+      - name: Upload mod
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.ASSET_NAME }}
           path: ${{ env.ASSET_NAME }}.zip
-  deploy:
+  create-release:
+    name: create release ${{ needs.determine-version.outputs.semVer }}
     needs:
       - determine-version
       - build
@@ -74,17 +78,17 @@ jobs:
     steps:
       - name: Create Release
         id: create-release
-        uses: jcdcdev/jcdcdev.GitHub.CreateRelease@main
+        uses: jcdcdev/jcdcdev.GitHub.CreateRelease@v1.0.18
         with:
           artifact-name: ${{ env.ASSET_NAME }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ env.SEMVER }}
           rich-format: false
       - name: Download package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ${{ env.ASSET_NAME }}
-      - uses: nickelc/upload-to-modio@v2.1.0
+      - uses: nickelc/upload-to-modio@v3.0.0
         with:
           token: ${{ secrets.MODIO_TOKEN }}
           game: ${{ secrets.MODIO_GAME }}
@@ -95,7 +99,7 @@ jobs:
           changelog: ${{ steps.create-release.outputs.changelog }}
   sync-readme:
     needs:
-      - deploy
+      - create-release
     uses: ./.github/workflows/sync-readme.yml
     secrets: inherit
     permissions:
