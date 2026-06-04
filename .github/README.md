@@ -93,6 +93,7 @@ Leave a comment if you have any suggestions or feature requests.
 ## Version Table
 | Version | Core Version | Game Version |
 |-----|---------| -----------|
+| [13.0.1](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/13.0.1) | [13.0.1](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/13.0.1) | 13.0.1 |
 | [13.0.0](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/13.0.0) | [13.0.0](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/13.0.0) | 13.0 |
 | [12.0.8](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/12.0.8) | [12.0.7](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/12.0.7) | 12.0.7 |
 | [12.0.7](https://github.com/jcdcdev/jcdcdev.Eco.Signs/releases/tag/12.0.7) | [12.0.6](https://github.com/jcdcdev/jcdcdev.Eco.Core/releases/tag/12.0.6) | 12.0.6 |
